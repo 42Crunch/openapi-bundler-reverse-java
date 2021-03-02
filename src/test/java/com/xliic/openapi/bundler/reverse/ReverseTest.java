@@ -1,0 +1,31 @@
+
+package com.xliic.openapi.bundler.reverse;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+
+import org.junit.jupiter.api.Test;
+
+public class ReverseTest {
+    @Test
+    void testCRLF() throws IOException, InterruptedException {
+        File file = new File("src/test/resources/common-components-3-17.yaml").getCanonicalFile();
+        String text = new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8);
+        Document document = Parser.parseYaml(text);
+        long line = document.getLine("/components/schemas/Error/properties/message/type");
+        assertEquals(42, line);
+    }
+
+    @Test
+    void testLF() throws IOException, InterruptedException {
+        File file = new File("src/test/resources/common-components-3-17-unix.yaml").getCanonicalFile();
+        String text = new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8);
+        Document document = Parser.parseYaml(text);
+        long line = document.getLine("/components/schemas/Error/properties/message/type");
+        assertEquals(42, line);
+    }
+}
