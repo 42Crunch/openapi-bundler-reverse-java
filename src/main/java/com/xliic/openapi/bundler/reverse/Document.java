@@ -1,15 +1,16 @@
 package com.xliic.openapi.bundler.reverse;
 
-import java.util.Map;
+import com.xliic.openapi.parser.ast.node.Node;
 
 public class Document {
-    private Map<String, Location> pointers;
 
-    public Document(Map<String, Location> pointers) {
-        this.pointers = pointers;
+    private final Node root;
+
+    public Document(Node root) {
+        this.root = root;
     }
 
     public long getLine(String jsonPointer) {
-        return this.pointers.get(jsonPointer).getVisualLine();
+        return root.find(jsonPointer).getRange().getLine() + 1;
     }
 }
